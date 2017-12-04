@@ -1,4 +1,4 @@
-vars  doku_id_ref(10)
+vars  doku_id_ref(20)
 
 call  aktiviere_protokoll_logviewer ()
 
