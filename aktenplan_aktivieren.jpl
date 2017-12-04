@@ -1,0 +1,24 @@
+vars  doku_id_ref(10)
+
+call  aktiviere_protokoll_logviewer ()
+
+if (!d3server_dokarten_geladen)
+  {
+   call  d3server_lade_dokuarten ()
+   d3server_dokarten_geladen = 1
+  }
+
+DBMS DECLARE akten_cursor_hilf CURSOR FOR                                     \
+     SELECT doku_id FROM phys_datei WHERE datum_einbring >= '09/01/2000'      \
+                                      AND dokuart = 'BE'
+
+DBMS WITH CURSOR akten_cursor_hilf ALIAS doku_id_ref
+DBMS WITH CURSOR akten_cursor_hilf EXECUTE
+
+while (@dmrowcount > 0)
+  {
+   msg d_msg "%A0407 document :doku_id_ref is updating it's folder-links"
+   call  hook_insert_exit_d3_20 (doku_id_ref, "", 1, :+user, 1)
+   DBMS WITH CURSOR akten_cursor_hilf CONTINUE
+  }
+
